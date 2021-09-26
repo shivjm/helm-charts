@@ -78,7 +78,7 @@ jobs:
       # - name: Run chart-testing (install)
       #   run: ct install --config ct.yaml
     
-  kubeval:
+  kubeconform:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
@@ -90,21 +90,10 @@ jobs:
       with:
         version: v3.7.0
 
-    # TODO use Docker image if GitHub Actions ever allows looping
-    - name: Download kubeconform
-      run: |
-        curl -sSL https://github.com/yannh/kubeconform/releases/download/${{ env.KUBECONFORM_VERSION }}/kubeconform-linux-amd64.tar.gz | \
-          tar xzf - kubeconform
-
-    - name: Update dependencies
-      run: |
-        helm dependency build .
-
-    - name: Validate files
-      # TODO the schema file name should use `KindSuffix` too like in
-      # the docs, but what that value is remains a mystery
-      run: |
-        for file in tests/*.yaml; do
-          helm template . -f $file | ./kubeconform -strict -summary -schema-location default -schema-location 'schemas/{{ .ResourceKind }}.json'
-        done
+    - name: Generate and validate releases
+      uses: shivjm/helm-kubeconform-action@v0.0.1
+      with:
+        additionalSchemaPaths: |
+          schemas/{{ .ResourceKind }}.json
+        chartsDirectory: "charts"
         
