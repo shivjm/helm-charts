@@ -26,14 +26,14 @@ jobs:
           tar xzf - helm-docs
 
     - name: Update docs
-      run: "./helm-docs -o README.md.new"
+      run: |
+        for chart in charts/*; do
+          pushd $chart && $GITHUB_WORKSPACE/helm-docs -o README.md.new; popd
+        done
 
     - name: Check diff output
-      uses: GuillaumeFalourd/diff-action@v1
-      with:
-        first_file_path: README.md
-        second_file_path: README.md.new
-        expected_result: PASSED
+      run: |
+        git diff-index --name-only --exit-code HEAD
 
   chart-testing:
     runs-on: ubuntu-latest
@@ -57,18 +57,10 @@ jobs:
     - name: Set up chart-testing
       uses: helm/chart-testing-action@v2.0.1
       with:
-        version: v2.5.0
-
-    - name: Run chart-testing (list-changed)
-      id: list-changed
-      run: |
-        changed=$(ct list-changed --config ct.yaml)
-        if [[ -n "$changed" ]]; then
-          echo "::set-output name=changed::true"
-        fi
+        version: v3.4.0
 
     - name: Run chart-testing (lint)
-      run: ct lint --config ct.yaml .
+      run: ct lint --config ct.yaml
 
       # TODO test install
       # - name: Create kind cluster
