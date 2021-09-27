@@ -76,11 +76,6 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Set up Helm
-      uses: azure/setup-helm@v1
-      with:
-        version: v3.7.0
-
     - name: Generate and validate releases
       uses: shivjm/helm-kubeconform-action@v0.0.1
       with:
