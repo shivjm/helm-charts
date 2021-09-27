@@ -6,7 +6,6 @@ on:
       - main
 
 env:
-  KUBECONFORM_VERSION: 'v0.4.10'
   HELM_DOCS_VERSION: '1.5.0'
 
 jobs:
@@ -77,15 +76,19 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Set up Helm
-      uses: azure/setup-helm@v1
+    - name: Login to GitHub Container Registry
+      uses: docker/login-action@v1
       with:
-        version: v3.7.0
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Generate and validate releases
-      uses: shivjm/helm-kubeconform-action@v0.0.1
-      with:
-        additionalSchemaPaths: |
+      uses: docker://ghcr.io/shivjm/helm-kubeconform-action:v0.1.0
+      env:
+        ADDITIONAL_SCHEMA_PATHS: |
           schemas/{{ .ResourceKind }}.json
-        chartsDirectory: "charts"
+        CHARTS_DIRECTORY: "charts"
+        KUBECONFORM_STRICT: "true"
+        HELM_UPDATE_DEPENDENCIES: "true"
         
