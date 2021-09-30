@@ -3,6 +3,23 @@ entries:
   webmentiond:
   - apiVersion: v2
     appVersion: v1.0.0
+    created: "2021-09-30T12:25:47.895219226Z"
+    description: A simple webmention receiver in Go
+    digest: 2a801528400644885f7b94091875376bee817dc89efff25d02fe49f57f104e99
+    home: https://github.com/shivjm/webmentiond-helm/
+    maintainers:
+    - email: shivjm@users.noreply.github.com
+      name: Shiv Jha-Mathur
+    name: webmentiond
+    sources:
+    - https://github.com/shivjm/webmentiond-helm/
+    - https://github.com/zerok/webmentiond/
+    type: application
+    urls:
+    - https://github.com/shivjm/helm-charts/releases/download/webmentiond-0.2.0/webmentiond-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v2
+    appVersion: v1.0.0
     created: "2021-09-30T12:02:08.693590749Z"
     description: A simple webmention receiver in Go
     digest: 8dbfa6e788562b09c02c9b2cf10dfb508c1ee394cd9ac15669620cce32b5df4a
@@ -18,4 +35,4 @@ entries:
     urls:
     - https://github.com/shivjm/helm-charts/releases/download/webmentiond-0.1.0/webmentiond-0.1.0.tgz
     version: 0.1.0
-generated: "2021-09-30T12:02:08.693599049Z"
+generated: "2021-09-30T12:25:47.895230427Z"
