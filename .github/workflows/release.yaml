@@ -1,0 +1,42 @@
+# taken from https://github.com/helm/charts-repo-actions-demo/blob/main/.github/workflows/release.yaml
+name: Release Charts
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Configure Git
+        run: |
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+
+      - name: Install Helm
+        uses: azure/setup-helm@v1
+        with:
+          version: v3.7.0
+
+      # Using GPG to sign Helm charts seems a bit suspect to me, with warnings like this in the docs:
+      #
+      #   Warning: the GnuPG v2 store your secret keyring using a new format `kbx` on the default location `~/.gnupg/pubring.kbx`. Please use the following command to convert your keyring to the legacy gpg format:
+      #
+      #   $ gpg --export-secret-keys >~/.gnupg/secring.gpg
+      #
+      # I think I’ll skip it for now.
+
+      - name: Run chart-releaser
+        uses: helm/chart-releaser-action@v1.2.1
+        with:
+          charts_dir: charts
+          config: cr.yaml
+        env:
+          CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
