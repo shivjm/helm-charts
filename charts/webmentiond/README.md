@@ -11,10 +11,9 @@ IngressRoute](https://doc.traefik.io/traefik/routing/providers/kubernetes-crd/))
 
 ## TL;DR
 
-```text
-$ git clone https://github.com/shivjm/webmentiond-helm/
-$ cd webmentiond-helm
-$ helm install --atomic my-release .
+```
+$ helm repo add shivjm https://shivjm.github.io/helm-charts/
+$ helm install --atomic my-release-name shivjm/webmentiond
 ```
 
 ## Maintainers
@@ -77,8 +76,7 @@ $ helm install --atomic my-release .
 
 ### About `config.public`
 
-`public.host` and `public.path` are required by the admin interface. For a server accessible at <kbd>https://www.example.com/webmentions/</kbd>,
-you would use these values:
+`public.host` and `public.path` are required by the admin interface. For a server accessible at <kbd>https://www.example.com/webmentions/</kbd>, you would use these values:
 
 ```yaml
   public:
@@ -107,3 +105,4 @@ replicas. (This is not supported by some providers.)
 By default, the pods drop all privileges and run as UID 1500. If your
 requirements differ, you can override `podSecurityContext` and
 `securityContext` as usual.
+
